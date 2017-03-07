@@ -29,7 +29,7 @@
 #include <iterator>
 #include <algorithm>
 #include <vector>
-
+#include <cmath>
 
 namespace mxx {
 namespace impl {

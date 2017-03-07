@@ -107,8 +107,8 @@ sample_arbit_decomp(_Iterator begin, _Iterator end, _Compare comp, size_t s, con
     else
         local_s = std::max<std::size_t>(((local_size*s*p)+total_size-1)/total_size, 1);
 
-    size_t n_splitters = mxx::allreduce(local_s, comm);
-    MXX_ASSERT(n_splitters >= p*s);
+//    size_t n_splitters = mxx::allreduce(local_s, comm);
+//    MXX_ASSERT(n_splitters >= p*s);
 
     // init samples
     std::vector<value_type> local_splitters;

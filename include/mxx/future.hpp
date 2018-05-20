@@ -49,6 +49,10 @@ public:
     requests& operator=(const requests& req) = default;
     requests& operator=(requests&& req) = default;
 
+    size_t size() {
+	return m_requests.size();
+    }
+
     void append(MPI_Request req) {
         m_requests.push_back(req);
     }
@@ -78,11 +82,44 @@ public:
         MPI_Waitall(m_requests.size(), &m_requests[0], MPI_STATUSES_IGNORE);
     }
 
+//    int waitsome() {
+//	int completed = 0;
+//        std::vector<int> idx(m_requests.size());
+//	MPI_Waitsome(m_requests.size(), &m_requests[0], &completed, &idx[0], MPI_STATUSES_IGNORE);
+//	if (completed == MPI_UNDEFINED) {
+//		printf("NO wait COMPLETIONS.\n");
+//		return 0;
+//	}
+//	std::cout << completed << " wait completed: ";
+//	for (int i = 0; i < completed ; ++i) {
+//		std::cout << idx[i] << ", ";	
+//	}
+//	std::cout << std::endl;
+//	return completed;
+//    }
+
     bool test() {
         int flag;
         MPI_Testall(m_requests.size(), &m_requests[0], &flag, MPI_STATUSES_IGNORE);
         return flag != 0;
     }
+
+//    int testsome() {
+//	int completed = 0;
+//        std::vector<int> idx(m_requests.size());
+//        MPI_Testsome(m_requests.size(), &m_requests[0], &completed, &idx[0], MPI_STATUSES_IGNORE);
+//	if (completed == MPI_UNDEFINED) {
+//		printf("NO test COMPLETIONS.\n");
+//		return 0;
+//	}
+//	std::cout << completed << " test completed: ";
+//	for (int i = 0; i < completed ; ++i) {
+//		std::cout << idx[i] << ", ";	
+//	}
+//	std::cout << std::endl;
+//	return completed;
+//    }
+
 
     // TODO: functions to access/return `MPI_Status`
 

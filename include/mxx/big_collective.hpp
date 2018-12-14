@@ -294,16 +294,16 @@ void all2all_big(const T* msgs, size_t size, T* out, const mxx::comm& comm = mxx
 
 
     // for sending to self, copy directly.
+#if defined __GNUC__ && __GNUC__>=6
 #pragma GCC diagnostic push
-#ifdef __clang__
-#pragma GCC diagnostic ignored "-Wunknown-warning-option"
-#endif
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
+#endif
     memcpy(const_cast<T*>(&(*out)) + static_cast<size_t>(comm.rank()) * size,
 	const_cast<T*>(msgs) + static_cast<size_t>(comm.rank()) * size,
 	size * sizeof(T));	
+#if defined __GNUC__ && __GNUC__>=6
 #pragma GCC diagnostic pop
-
+#endif
     // dispatch receives
     // relies on send and recv sizes matching at both ends of rank pair to ensure matching data types and number of requests.
     // again, check size against max_int.
@@ -412,16 +412,16 @@ void all2allv_big(const T* msgs, const std::vector<size_t>& send_sizes, const st
 
 
     // for sending to self, copy directly.
+#if defined __GNUC__ && __GNUC__>=6
 #pragma GCC diagnostic push
-#ifdef __clang__
-#pragma GCC diagnostic ignored "-Wunknown-warning-option"
-#endif
 #pragma GCC diagnostic ignored "-Wclass-memaccess"
+#endif
     memcpy(const_cast<T*>(&(*out)) + recv_displs[comm.rank()],
 	const_cast<T*>(msgs) + send_displs[comm.rank()],
 	recv_sizes[comm.rank()] * sizeof(T));	
+#if defined __GNUC__ && __GNUC__>=6
 #pragma GCC diagnostic pop
-
+#endif
     // dispatch receives
     // relies on send and recv sizes matching at both ends of rank pair to ensure matching data types and number of requests.
     // again, check size against max_int.
